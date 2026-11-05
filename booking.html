@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Book — Cinema City</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🎬</div>
+    <div class="logo-text"><strong>Cinema City</strong><span>Your Cinema Experience</span></div>
+  </a>
+  <nav><a href="index.html">Home</a><a href="movies.html">Movies</a><a href="login.html" class="nbtn">Member Login</a></nav>
+</header>
+
+<div class="detail">
+  <div class="detail-poster"><img id="poster" src="images/avengers.jpg" alt="poster"></div>
+
+  <div class="detail-info">
+    <a href="index.html" class="back-btn">← Back to Movies</a>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:6px">
+      <h1 id="title">Avengers</h1>
+      <span class="rbadge" id="rating" style="position:static;width:36px;height:28px;font-size:.66rem;flex-shrink:0">PG</span>
+    </div>
+    <div class="d-meta"><span><span class="star">★</span> <span id="genre">Action</span></span><span>⏱ <span id="dur">181</span> min</span></div>
+    <p id="desc">Earth's mightiest heroes must come together to stop a catastrophic threat.</p>
+
+    <!-- Showtime -->
+    <div class="panel">
+      <div class="panel-label">📅 Select Showtime</div>
+      <div class="showtimes">
+        <div class="st active" onclick="selTime(this)">11:00 AM</div>
+        <div class="st" onclick="selTime(this)">2:15 PM</div>
+        <div class="st" onclick="selTime(this)">5:30 PM</div>
+        <div class="st" onclick="selTime(this)">8:45 PM</div>
+      </div>
+    </div>
+
+    <!-- Tickets -->
+    <div class="panel">
+      <div class="panel-label">🎟 Number of Tickets</div>
+      <div class="counter">
+        <button onclick="chg(-1)">−</button>
+        <span id="tc">1</span>
+        <button onclick="chg(1)">+</button>
+      </div>
+    </div>
+
+    <!-- Seats -->
+    <div class="panel">
+      <div class="panel-label">💺 Select Your Seats</div>
+      <p style="font-size:.74rem;color:var(--m);margin-bottom:14px">Click to select / deselect a seat.</p>
+      <div class="seat-screen"></div>
+      <div class="seat-grid" id="seats"></div>
+      <div class="seat-legend">
+        <span><i style="background:var(--s2);border:1px solid var(--b)"></i>Available</span>
+        <span><i style="background:var(--o)"></i>Selected</span>
+        <span><i style="background:#333;opacity:.4"></i>Taken</span>
+      </div>
+    </div>
+
+    <!-- Price -->
+    <div class="panel">
+      <div class="brow"><span>Price per ticket</span><span id="pp">£12.00</span></div>
+      <div class="brow"><span>Tickets</span><span id="tn">1</span></div>
+      <div class="brow"><span>Subtotal</span><span id="sub">£12.00</span></div>
+      <div class="brow total"><span>Total</span><span id="tot">£12.00</span></div>
+      <div class="mnote">Member benefits: <a href="login.html">Login</a> to get up to 30% discount!</div>
+    </div>
+
+    <a class="btn btn-p" id="cbtn" href="payment.html">Proceed to Checkout</a>
+  </div>
+</div>
+
+<script>
+// getting movie data from URL
+const ps=new URLSearchParams(location.search);
+const movie=ps.get("m")||"Avengers", price=parseFloat(ps.get("p")||12);
+
+// local poster images stored in the images folder
+const LOCAL_POSTERS={
+  Avengers:"images/avengers.jpg",
+  Spiderman:"images/spiderman.jpg",
+  Joker:"images/joker.jpg",
+  "Dark+Knight":"images/dark-knight.jpg",
+  Interstellar:"images/interstellar.jpg",
+  "John+Wick":"images/john-wick.jpg"
+};
+
+// short descriptions for each movie
+const DESCS={Avengers:"Earth's mightiest heroes unite to stop a catastrophic universal threat.",Spiderman:"Your friendly neighbourhood hero swings into an epic multiverse adventure.",Joker:"A failed comedian's descent into madness reshapes Gotham City.","Dark+Knight":"Batman faces his greatest test as the Joker unleashes chaos.",Interstellar:"Astronauts travel through a wormhole searching for humanity's new home.","John+Wick":"A retired hitman seeks vengeance against those who wronged him."};
+
+// match the URL movie name to a key in our lookup objects
+const key=Object.keys(LOCAL_POSTERS).find(k=>k===movie.replace(" ","+"))||"Avengers";
+
+// set poster image from local images folder
+document.getElementById("poster").src=LOCAL_POSTERS[key]||"images/avengers.jpg";
+
+// fill in the movie details from URL params
+document.getElementById("title").textContent=movie.replace("+"," ");
+document.getElementById("genre").textContent=ps.get("g")||"Action";
+document.getElementById("dur").textContent=ps.get("d")||"181";
+document.getElementById("rating").textContent=ps.get("r")||"PG";
+document.getElementById("desc").textContent=DESCS[key]||"";
+document.getElementById("pp").textContent="£"+price.toFixed(2);
+
+// build the seat grid — randomly mark some seats as already taken
+const taken=new Set();
+while(taken.size<10)taken.add(Math.floor(Math.random()*40));
+const sg=document.getElementById("seats");
+for(let i=0;i<40;i++){
+  const s=document.createElement("div");
+  s.className="seat"+(taken.has(i)?" taken":"");
+  if(!taken.has(i)) s.onclick = () => {
+  s.classList.toggle("sel");
+  console.log("Seat clicked");
+};
+  sg.appendChild(s);
+}
+
+let qty=1;
+
+// highlight the selected showtime
+function selTime(el){document.querySelectorAll(".st").forEach(s=>s.classList.remove("active"));el.classList.add("active");}
+
+// change ticket count and recalculate price
+function chg(d){qty=Math.max(1,Math.min(10,qty+d));document.getElementById("tc").textContent=qty;upd();}
+
+// updating total price and saving booking data to localStorage
+function upd(){
+  const t=(price*qty).toFixed(2);
+  // update price display
+  document.getElementById("tn").textContent=qty;
+  document.getElementById("sub").textContent="£"+t;
+  document.getElementById("tot").textContent="£"+t;
+  // saving data in localStorage so checkout page can read it
+  localStorage.setItem("totalPrice",t);
+  localStorage.setItem("tickets",qty);
+  localStorage.setItem("movie",movie.replace("+"," "));
+  localStorage.setItem("time",document.querySelector(".st.active").textContent);
+  localStorage.setItem("poster",LOCAL_POSTERS[key]||"images/avengers.jpg");
+}
+upd();
+
+// save latest values when user clicks checkout
+document.getElementById("cbtn").onclick=e=>{upd();};
+</script>
+</body>
+<script src="script.js"></script>
+</html>

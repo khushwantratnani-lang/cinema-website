@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout — Cinema City</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🎬</div>
+    <div class="logo-text"><strong>Cinema City</strong><span>Your Cinema Experience</span></div>
+  </a>
+  <nav><a href="index.html">Home</a><a href="movies.html">Movies</a></nav>
+</header>
+
+<div class="checkout">
+  <h1>Checkout</h1>
+
+  <div class="sum-card">
+    <div class="sum-movie">
+      <img id="sp" src="" alt="poster">
+      <div>
+        <h3 id="sm"></h3>
+        <div class="dline">📅 <span id="sd"></span></div>
+        <div class="dline">⏰ <span id="st2"></span></div>
+        <div class="dline">🎟 <span id="sn"></span> ticket(s)</div>
+      </div>
+    </div>
+    <div class="srow"><span>Subtotal:</span><span id="ss"></span></div>
+    <div class="srow tot"><span><strong>Total:</strong></span><span id="stot"><strong></strong></span></div>
+  </div>
+
+  <div class="pay-card">
+    <h2>💳 Payment Information</h2>
+    <form onsubmit="pay(event)">
+      <div class="field"><label>Cardholder Name</label><input placeholder="John Doe" required></div>
+      <div class="field"><label>Card Number</label><input placeholder="1234 5678 9012 3456" maxlength="19" oninput="this.value=this.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)" required></div>
+      <div class="field-row">
+        <div class="field"><label>Expiry</label><input placeholder="MM/YY" maxlength="5" oninput="this.value=this.value.replace(/\D/g,'').replace(/^(\d{2})(\d)/,'$1/$2').slice(0,5)" required></div>
+        <div class="field"><label>CVV</label><input placeholder="123" maxlength="3" required></div>
+      </div>
+      <div class="dummy-note"><strong>Note:</strong> This is a dummy form. No data is stored or processed.</div>
+      <button class="btn btn-p" id="pb" type="submit">Pay £0.00</button>
+      <a href="booking.html" class="btn btn-s">Back</a>
+    </form>
+  </div>
+</div>
+
+<script>
+// reading booking data from localStorage that was saved on the booking page
+const t=localStorage.getItem("totalPrice")||"0";
+const n=localStorage.getItem("tickets")||"1";
+const m=localStorage.getItem("movie")||"Movie";
+const tm=localStorage.getItem("time")||"TBC";
+const po=localStorage.getItem("poster")||"";
+
+// fill in the booking summary with the saved data
+document.getElementById("sp").src=po;
+document.getElementById("sm").textContent=m;
+document.getElementById("sd").textContent=new Date().toLocaleDateString("en-GB");
+document.getElementById("st2").textContent=tm;
+document.getElementById("sn").textContent=n;
+document.getElementById("ss").textContent="£"+parseFloat(t).toFixed(2);
+document.getElementById("stot").innerHTML="<strong>£"+parseFloat(t).toFixed(2)+"</strong>";
+
+// show the correct total on the pay button
+document.getElementById("pb").textContent="Pay £"+parseFloat(t).toFixed(2);
+
+// simple dummy payment — just redirect to confirmation (no real payment processed)
+function pay(e){e.preventDefault();window.location="confirmation.html"}
+</script>
+</body>
+<script src="script.js"></script>
+</html>

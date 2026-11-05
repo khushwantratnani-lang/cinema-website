@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Employee Portal — Cinema City</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="ls" class="login-bg">
+  <div class="lcard" style="max-width:370px">
+    <div style="text-align:center;font-size:2.2rem;margin-bottom:10px">👤⚙️</div>
+    <h2>Employee Portal</h2>
+    <p class="sub">Access the employee dashboard</p>
+    <form onsubmit="empIn(event)">
+      <div class="field"><label>Employee Email</label><div class="iw"><span>👤</span><input type="email" placeholder="employee@cinema.com" required></div></div>
+      <div class="field"><label>Password</label><div class="iw"><span>🔒</span><input type="password" placeholder="••••••••" required></div></div>
+      <button type="submit" class="btn-login">Login to Dashboard</button>
+    </form>
+    <div class="demo-box">
+      <strong>Demo Employee Account:</strong>
+      <p>Email: <em>khushwant@cinema.com</em></p>
+      <p>Password: <em>admin123</em></p>
+    </div>
+    <div class="links"><a href="index.html" style="color:#999;font-weight:400">Back to Home</a></div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="db" style="display:none">
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🎬</div>
+    <div class="logo-text"><strong>Cinema City</strong><span>Employee Dashboard</span></div>
+  </a>
+  <nav><a href="index.html">Home</a><button onclick="empOut()" class="nbtn" style="border:none;cursor:pointer">Logout</button></nav>
+</header>
+<div class="page-top"><h1>Admin Panel</h1><p>Manage movies, pricing and discount offers.</p></div>
+<div class="adm">
+  <div class="sum-card">
+    <div class="adm-form-title">Add New Movie</div>
+    <p class="adm-form-sub">Fill in the details to list a new film.</p>
+    <form onsubmit="add(event)">
+      <div class="field"><label>Title</label><input id="mn" placeholder="e.g. Inception" required></div>
+      <div class="field"><label>Genre</label><input id="mg" placeholder="e.g. Sci-Fi"></div>
+      <div class="field"><label>Duration</label><input id="md" placeholder="e.g. 148 mins"></div>
+      <div class="field"><label>Price (£)</label><input id="mpr" type="number" placeholder="10.00" step="0.50" min="0"></div>
+      <div class="field"><label>Discount</label>
+        <select id="mdc"><option value="0">None</option><option value="10">10% Off</option><option value="20">20% Off</option><option value="50">50% Off</option></select>
+      </div>
+      <button type="submit" class="btn btn-p" style="margin-top:6px">Add Movie</button>
+    </form>
+  </div>
+  <div>
+    <div class="list-lbl">Current Movie Listings</div>
+    <div id="ml"><div class="empty">No movies added yet.</div></div>
+  </div>
+</div>
+</div>
+
+<script>
+// simple demo login — hide login screen and show dashboard (not a real backend)
+function empIn(e){
+  e.preventDefault();
+  document.getElementById("ls").style.display="none";
+  document.getElementById("db").style.display="block";
+}
+
+// logout — hide dashboard and show login screen again
+function empOut(){
+  document.getElementById("ls").style.display="flex";
+  document.getElementById("db").style.display="none";
+}
+
+// load any movies already saved in localStorage
+let movies=JSON.parse(localStorage.getItem("movies"))||[];
+
+// add a new movie and save to localStorage
+function add(e){
+  e.preventDefault();
+  movies.push({name:mn.value,genre:mg.value,duration:md.value,price:mpr.value,discount:mdc.value});
+  // saving updated movie list in localStorage
+  localStorage.setItem("movies",JSON.stringify(movies));
+  e.target.reset();
+  render();
+}
+
+// remove a movie by index and update localStorage
+function del(i){
+  movies.splice(i,1);
+  // saving data in localStorage after removing the movie
+  localStorage.setItem("movies",JSON.stringify(movies));
+  render();
+}
+
+// rebuild the movie list on screen
+function render(){
+  const el=document.getElementById("ml");
+  el.innerHTML=movies.length?movies.map((m,i)=>`
+    <div class="mitem">
+      <div><h4>${m.name}</h4><div class="mi">${m.genre||"—"} · ${m.duration||"—"} · £${parseFloat(m.price||0).toFixed(2)}</div></div>
+      <div class="ir">${m.discount>0?`<span class="badge">${m.discount}% OFF</span>`:""}<button class="delbtn" onclick="del(${i})">Remove</button></div>
+    </div>`).join(""):`<div class="empty">No movies added yet.</div>`;
+}
+render();
+</script>
+</body>
+<script src="script.js"></script>
+</html>

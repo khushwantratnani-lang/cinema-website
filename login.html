@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login — Cinema City</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="login-bg">
+  <div class="lcard">
+    <h2>Member Login</h2>
+    <p class="sub">Login to access member benefits and discounts</p>
+    <form onsubmit="go(event)">
+      <div class="field"><label>Email Address</label><div class="iw"><span>👤</span><input type="email" placeholder="your@email.com" required></div></div>
+      <div class="field"><label>Password</label><div class="iw"><span>🔒</span><input type="password" placeholder="••••••••" required></div></div>
+      <button type="submit" class="btn-login">Login</button>
+    </form>
+    <div class="demo-box">
+      <strong>Demo Accounts:</strong>
+      <p>Regular Member: <em>khushwant@example.com</em> / password123</p>
+      <p>Senior Member: <em>antor@example.com</em> / password123</p>
+      <p>Children Member: <em>jordan@example.com</em> / password123</p>
+    </div>
+    <div class="links">
+      <p>Don't have an account? <a href="#">Register here</a></p>
+      <p style="margin-top:6px"><a href="index.html" style="color:#999;font-weight:400">Continue as Guest</a></p>
+    </div>
+  </div>
+</div>
+<script>
+// simple demo login — not a real backend, just redirects to home
+function go(e){
+  e.preventDefault();
+  // save a flag so other pages know a member is logged in
+  localStorage.setItem("member","true");
+  window.location="index.html";
+}
+</script>
+</body>
+<script src="script.js"></script>
+</html>

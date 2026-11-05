@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Confirmed — Cinema City</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-icon">🎬</div>
+    <div class="logo-text"><strong>Cinema City</strong><span>Your Cinema Experience</span></div>
+  </a>
+  <nav><a href="index.html">Home</a><a href="movies.html">Movies</a></nav>
+</header>
+<div class="success">
+  <div class="tick">✓</div>
+  <h1>Booking Confirmed!</h1>
+  <p id="msg"></p>
+  <div class="sbtns">
+    <a href="index.html" class="sbtn-p">Browse More Movies</a>
+    <a href="index.html" class="sbtn-s">Back to Home</a>
+  </div>
+</div>
+<script>
+// reading booking summary from localStorage saved during checkout
+const t=localStorage.getItem("totalPrice")||"0",n=localStorage.getItem("tickets")||"1",m=localStorage.getItem("movie")||"your movie";
+
+// show the confirmation message with the booking details
+document.getElementById("msg").innerHTML=`You booked <strong>${n} ticket${n>1?'s':''}</strong> for <strong>${m}</strong>.<br>Total: <strong style="color:var(--o)">£${parseFloat(t).toFixed(2)}</strong>. Enjoy the show!`;
+</script>
+</body>
+<script src="script.js"></script>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cinema City</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <a href="index.html" class="logo">
+    <div class="logo-icon"></div>
+    <div class="logo-text"><strong>Cinema City</strong><span>Your Cinema Experience</span></div>
+  </a>
+  <nav>
+    <a href="index.html" class="on">Home</a>
+    <a href="movies.html">Movies</a>
+    <a href="login.html" class="nbtn">Member Login</a>
+    <a href="admin.html" class="nbtn">Employee</a>
+  </nav>
+</header>
+
+<div class="banner">
+  <h1>Now Playing</h1>
+  <p>Book your tickets for the latest blockbusters</p>
+</div>
+
+<div class="search-row">
+  <div class="search-wrap">
+    <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" id="q" placeholder="Search movies..." oninput="filter()">
+  </div>
+  <select class="filter-select" id="gf" onchange="filter()">
+    <option value="">All Genres</option>
+    <option>Action</option><option>Drama</option><option>Comedy</option>
+    <option>Sci-Fi</option><option>Thriller</option>
+  </select>
+</div>
+
+<div class="movies-sec">
+  <div class="sec-label">All Movies</div>
+  <div class="grid" id="grid">
+    <div class="card" data-g="Action"><div class="card-img"><img src="images/avengers.jpg" alt=""><span class="rbadge">PG</span></div><div class="card-body"><h3>Avengers</h3><div class="card-meta"><span><span class="star">★</span> Action</span><span>⏱ 181 min</span></div><p class="card-desc">Earth's mightiest heroes must come together to stop a catastrophic threat to the universe.</p><div class="card-price">£12.00 <em>per ticket</em></div><a href="booking.html?m=Avengers&p=12&g=Action&d=181&r=PG" class="bkbtn">View Details &amp; Book</a></div></div>
+    <div class="card" data-g="Action"><div class="card-img"><img src="images/spiderman.jpg" alt=""><span class="rbadge">PG</span></div><div class="card-body"><h3>Spiderman</h3><div class="card-meta"><span><span class="star">★</span> Action</span><span>⏱ 148 min</span></div><p class="card-desc">Your friendly neighbourhood hero swings into an epic multiverse adventure.</p><div class="card-price">£10.00 <em>per ticket</em></div><a href="booking.html?m=Spiderman&p=10&g=Action&d=148&r=PG" class="bkbtn">View Details &amp; Book</a></div></div>
+    <div class="card" data-g="Drama"><div class="card-img"><img src="images/joker.jpg" alt=""><span class="rbadge">R</span></div><div class="card-body"><h3>Joker</h3><div class="card-meta"><span><span class="star">★</span> Drama</span><span>⏱ 122 min</span></div><p class="card-desc">A gritty character study of a failed comedian whose descent into madness reshapes Gotham.</p><div class="card-price">£10.00 <em>per ticket</em></div><a href="booking.html?m=Joker&p=10&g=Drama&d=122&r=R" class="bkbtn">View Details &amp; Book</a></div></div>
+    <div class="card" data-g="Action"><div class="card-img"><img src="images/dark-knight.jpg" alt=""><span class="rbadge">PG-13</span></div><div class="card-body"><h3>Dark Knight</h3><div class="card-meta"><span><span class="star">★</span> Action</span><span>⏱ 152 min</span></div><p class="card-desc">Batman faces his greatest test when the Joker unleashes chaos on Gotham City.</p><div class="card-price">£11.00 <em>per ticket</em></div><a href="booking.html?m=Dark+Knight&p=11&g=Action&d=152&r=PG-13" class="bkbtn">View Details &amp; Book</a></div></div>
+    <div class="card" data-g="Sci-Fi"><div class="card-img"><img src="images/interstellar.jpg" alt=""><span class="rbadge">PG-13</span></div><div class="card-body"><h3>Interstellar</h3><div class="card-meta"><span><span class="star">★</span> Sci-Fi</span><span>⏱ 169 min</span></div><p class="card-desc">A crew of astronauts travel through a wormhole in search of a new home for humanity.</p><div class="card-price">£10.00 <em>per ticket</em></div><a href="booking.html?m=Interstellar&p=10&g=Sci-Fi&d=169&r=PG-13" class="bkbtn">View Details &amp; Book</a></div></div>
+    <div class="card" data-g="Thriller"><div class="card-img"><img src="images/john-wick.jpg" alt=""><span class="rbadge">R</span></div><div class="card-body"><h3>John Wick</h3><div class="card-meta"><span><span class="star">★</span> Thriller</span><span>⏱ 101 min</span></div><p class="card-desc">A retired hitman seeks vengeance against the people who wronged him.</p><div class="card-price">£9.00 <em>per ticket</em></div><a href="booking.html?m=John+Wick&p=9&g=Thriller&d=101&r=R" class="bkbtn">View Details &amp; Book</a></div></div>
+  </div>
+</div>
+
+<script>
+// filter movies by search text and genre dropdown
+function filter(){
+  const q=document.getElementById("q").value.toLowerCase();
+  const g=document.getElementById("gf").value;
+  document.querySelectorAll(".card").forEach(c=>{
+    const match=c.querySelector("h3").textContent.toLowerCase().includes(q)&&(!g||c.dataset.g===g);
+    c.style.display=match?"":"none";
+  });
+}
+</script>
+</body>
+  <script src="script.js"></script>
+</html>
