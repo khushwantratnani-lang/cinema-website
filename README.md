@@ -2,6 +2,22 @@
 
 A multi-page cinema booking website built with **HTML**, **CSS** and **JavaScript**, with no frameworks or back end. It was designed using the Waterfall methodology.
 
+## Site map
+
+The page flow was planned before building, following the Waterfall methodology.
+
+![Site map](screenshots/site-map.png)
+
+## Screenshots
+
+Screenshots use the placeholder posters (see Notes).
+
+![Home](screenshots/home.png)
+![Booking](screenshots/booking.png)
+![Checkout](screenshots/checkout.png)
+![Confirmation](screenshots/confirmation.png)
+![Employee panel](screenshots/admin.png)
+
 ## Pages
 
 | Page | What it does |
